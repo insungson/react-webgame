@@ -1,0 +1,42 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <div id='root'></div>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type='text/babel'>
+      'use strict';
+      //like-button.html 과 비교하면 babel 스크립트를 추가하여 자바스크립트에서 html코드를 사용할수 있게 만들었다
+      class LikeButton extends React.Component {
+        constructor(props){
+          super(props);
+          this.state = {liked: false, liked1: false};
+        }
+
+        render(){
+          if(this.state.liked){
+            return 'You Liked This!';
+          }
+          //babel을 사용할수 있기 때문에 아래서 createElement를 사용할 필요가 없다 
+          //자바스크립트에서 HTML코드 사용가능
+          return (
+            <div>
+              <button onClick = {() => this.setState({liked: true})}>
+                Like
+              </button>
+              <button onClick = {() => this.setState({liked1: true})}>
+                {this.state.liked1 === true ? 'Like' : 'Liked'}
+              </button>
+            </div>
+          );
+        }
+      }
+    </script>
+    <script type='text/babel'>
+      ReactDOM.render(<LikeButton/>, document.querySelector('#root'));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta charset='UTF-8'/>
+    <title>구구단</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+     <div id='root'></div> <!--스크림트의 결과를 나타내는 곳 -->
+     <script type='text/babel'>
+      class GuGuDan extends React.Component {
+        state = {
+          first: Math.ceil(Math.random() * 9),  //Math.ceil() 은 반올림하는 함수이다
+          second: Math.ceil(Math.random() * 9),
+          value: '',
+          result: '',
+        };
+
+        onSubmit = (e) => {
+          e.preventDefault();
+          if(parseInt(this.state.value) === this.state.first * this.state.second){
+            this.setState((prevState) =>{ //이전의 입력값을 가져오는 방법 함수안의 함수
+              return {    //이부분을 ()로 묶으면 에러가 날까?
+                //-> ncaught SyntaxError: Inline Babel script: Unexpected token, expected , (15:31) 에러 발생
+                result: '정답: ' + prevState.value,
+                first: Math.ceil(Math.random() * 9),
+                second: Math.ceil(Math.random() * 9),
+                value: '',
+              };
+            });
+            this.input.focus();
+          }else{
+            this.setState({
+              result: '땡',
+              value:'',
+            });
+            this.input.focus();
+          }
+        };
+
+        onChange = (e) => {
+          this.setState({value: e.target.value});
+        };
+
+        input; //class 내에서 변수선언 focus를 사용하기 위해 사용
+        onRefInput = (c) => {this.input = c};
+
+        render(){
+          return (
+            <React.Fragment>
+              <div>{this.state.first} 곱하기 {this.state.second}는?</div>
+              <form onSubmit={this.onSubmit}>
+                <input ref={this.onRefInput} type='number' value={this.state.value} onChange={this.onChange}/>
+                <button>입력!</button>
+              </form>
+              <div>{this.state.result}</div>
+            </React.Fragment>
+          );
+        }
+      }
+     </script>
+     <script type="text/babel">
+      ReactDOM.render(<GuGuDan/>, document.querySelector('#root'));
+     </script>
+  </body>
+</html>
